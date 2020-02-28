@@ -3,7 +3,7 @@ import { CREATE, LOGIN, LOGOUT } from './actions'
 const initialState = {
     user: null,
     logged: false,
-    sesionCookie: null
+    sesionCookie: null,
 }
 
 function userReducer(state = initialState, action) {
