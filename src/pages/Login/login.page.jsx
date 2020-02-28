@@ -1,11 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const LoginPage = params => {
-    return (
-        <div>
-            LogIn
-        </div>
-    )
+import { LoginComponent } from '../../components'
+import { userLogin } from '../../redux/user/actions'
+
+const mapDispatchToProps = { userLogin }
+
+function LoginPage(params) {
+    return (<LoginComponent submit={userLogin} />)
 }
 
-export default LoginPage
+export default connect(null, mapDispatchToProps)(LoginPage)

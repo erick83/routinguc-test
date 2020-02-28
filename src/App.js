@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Provider } from 'react-redux';
 
-import { MenuComponent } from './components'
+import { MenuComponent, SideMenuComponent } from './components'
 import { LoginPage } from './pages'
 import store from './redux/store';
 import './App.css';
@@ -16,11 +16,14 @@ const ROUTES = Object.freeze({
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <MenuComponent></MenuComponent>
-        <Switch>
-          <Route exact path={ROUTES.DEFAULT} component={LoginPage}></Route>
-        </Switch>
+        <BrowserRouter>
+          <MenuComponent></MenuComponent>
+        <div className="App">
+          <SideMenuComponent></SideMenuComponent>
+          <Switch>
+            <Route exact path={ROUTES.DEFAULT} component={LoginPage}></Route>
+          </Switch>
+        </div>
       </BrowserRouter>
     </Provider>
   );

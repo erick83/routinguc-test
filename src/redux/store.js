@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from './user/reducer'
+import uiStatesReducer from './ui-states/reducers'
 
 const reducers = combineReducers({
     user: userReducer,
+    ui: uiStatesReducer,
 })
 
 export default createStore(
