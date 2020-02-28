@@ -1,4 +1,4 @@
-import { CREATE, LOGIN, LOGOUT } from './actions'
+import { SIGNUP, LOGIN, LOGOUT } from './actions'
 
 const initialState = {
     user: null,
@@ -9,10 +9,8 @@ const initialState = {
 export default function userReducer(state = initialState, action) {
     const { type, payload } = action
 
-    console.log(action)
-
     switch (type) {
-        case CREATE:
+        case SIGNUP:
             return {
                 ...state,
                 user: payload,

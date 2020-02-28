@@ -15,7 +15,6 @@ async function fetchBase (path, method, body = null) {
     }
 
     const response = await fetch(`${baseUrl}${path}`, options);
-    console.log('response status', response);
     return response.text();
 }
 

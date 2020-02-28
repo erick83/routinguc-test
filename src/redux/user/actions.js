@@ -1,14 +1,14 @@
 // Actions types
 
-export const CREATE = 'USER_CREATE'
+export const SIGNUP = 'USER_SIGNUP'
 export const LOGIN = 'USER_LOGIN'
 export const LOGOUT = 'USER_LOGOUT'
 export const LIST = 'USER_LIST_GET'
 
 // Action creators
 
-export const userCreate = payload => ({
-    type: CREATE,
+export const userSignup = payload => ({
+    type: SIGNUP,
     payload,
 })
 

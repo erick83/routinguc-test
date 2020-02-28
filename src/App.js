@@ -1,32 +1,72 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { Provider } from 'react-redux';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 import { MenuComponent, SideMenuComponent } from './components'
-import { LoginPage } from './pages'
-import store from './redux/store';
+import { LoginPage, UserListPage, SignupPage } from './pages'
 import './App.css';
 
 const ROUTES = Object.freeze({
   DEFAULT: '/',
-  SIGIN: '/sigin',
-  USER_LIST: 'user-list',
+  LOGIN: '/login',
+  SIGUP: '/signup',
+  USER_LIST: '/user-list',
+  MAP_INFO: '/map-info',
 })
 
-function App() {
+function PrivateRoute({ children, auth, ...rest }) {
   return (
-    <Provider store={store}>
-        <BrowserRouter>
-          <MenuComponent></MenuComponent>
-        <div className="App">
-          <SideMenuComponent></SideMenuComponent>
-          <Switch>
-            <Route exact path={ROUTES.DEFAULT} component={LoginPage}></Route>
-          </Switch>
-        </div>
-      </BrowserRouter>
-    </Provider>
+    <Route
+      {...rest}
+      render={({ location }) =>
+        auth ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 
-export default App;
+function App({ auth }) {
+  const defaultRoute = auth ? ROUTES.USER_LIST : ROUTES.LOGIN
+  return (
+    <BrowserRouter>
+      <MenuComponent></MenuComponent>
+
+      <div className="App">
+        <SideMenuComponent />
+        <Switch>
+          <Route exact path={ROUTES.DEFAULT}>
+            <Redirect to={defaultRoute} />
+          </Route>
+
+          <Route exact path={ROUTES.LOGIN}>
+            <LoginPage />
+          </Route>
+
+          <Route exact path={ROUTES.SIGUP}>
+            <SignupPage />
+          </Route>
+
+          <PrivateRoute exact path={ROUTES.USER_LIST}>
+            <UserListPage />
+          </PrivateRoute>
+
+        </Switch>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+const mapStateToProps = store => ({
+  auth: store.user.logged
+})
+
+export default connect(mapStateToProps)(App);

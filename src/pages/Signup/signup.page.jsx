@@ -6,8 +6,8 @@ import { userLogin } from '../../redux/user/actions'
 
 const mapDispatchToProps = { userLogin }
 
-function LoginPage({userLogin}) {
-    return (<UserFormComponent submit={userLogin} type="login" />)
+function SignupPage({userLogin}) {
+    return (<UserFormComponent submit={userLogin} type="signup" />)
 }
 
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default connect(null, mapDispatchToProps)(SignupPage)
