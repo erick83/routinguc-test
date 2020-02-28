@@ -1,15 +1,27 @@
-const baseUrl = '​http://btfx.herokuapp.com/'
+async function fetchBase (path, method, body = null) {
+    const baseUrl = '​http://btfx.herokuapp.com/'
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json')
 
-const fetchBase = (path, params) => {
     const options = {
-        ...params,
+        method,
+        headers,
     }
-    return fetch(`${baseUrl}${path}`, options)
+
+
+    if (body) {
+        const raw = JSON.stringify(body)
+        options.body = raw
+    }
+
+    const response = await fetch(`${baseUrl}${path}`, options);
+    console.log('response status', response);
+    return response.text();
 }
 
 export const get = (path = '') => {
     const method = 'get'
-    return fetchBase(path, {method})
+    return fetchBase(path, method)
 }
 
 export const post = (path = '', body) => {

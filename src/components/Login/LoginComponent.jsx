@@ -49,12 +49,18 @@ class LoginComponent extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
 
-        if (this.isValid(this.state)) {
-            console.log(this)
-            this.props.submit(this.state)
+        const data = {
+            user: this.state.user,
+            password: this.state.password,
+            email: this.state.email,
+        }
+
+        if (this.isValid(data)) {
+            this.props.submit(data)
         }
     }
 
+    // TODO: Validators
     isValid = (state) => {
         return true
     }

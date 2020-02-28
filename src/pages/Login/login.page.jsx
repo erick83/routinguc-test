@@ -6,7 +6,7 @@ import { userLogin } from '../../redux/user/actions'
 
 const mapDispatchToProps = { userLogin }
 
-function LoginPage(params) {
+function LoginPage({userLogin}) {
     return (<LoginComponent submit={userLogin} />)
 }
 

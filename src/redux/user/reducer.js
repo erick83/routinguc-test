@@ -9,11 +9,13 @@ const initialState = {
 export default function userReducer(state = initialState, action) {
     const { type, payload } = action
 
+    console.log(action)
+
     switch (type) {
         case CREATE:
             return {
-                ...initialState,
-                user: payload.user,
+                ...state,
+                user: payload,
             }
 
         case LOGIN:
