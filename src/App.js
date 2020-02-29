@@ -3,7 +3,8 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import { MenuComponent, SideMenuComponent } from './components'
-import { LoginPage, UserListPage, SignupPage } from './pages'
+import { LoginPage, UserListPage, SignupPage, WelcomePage } from './pages'
+import { loadSesion } from './redux/user/actions';
 import './App.css';
 
 const ROUTES = Object.freeze({
@@ -15,6 +16,7 @@ const ROUTES = Object.freeze({
 })
 
 function PrivateRoute({ children, auth, ...rest }) {
+  console.log(auth)
   return (
     <Route
       {...rest}
@@ -34,8 +36,13 @@ function PrivateRoute({ children, auth, ...rest }) {
   );
 }
 
-function App({ auth }) {
-  const defaultRoute = auth ? ROUTES.USER_LIST : ROUTES.LOGIN
+function App({ auth, sesion }) {
+  const userSesion = sessionStorage.getItem('routinguc-test-user')
+  console.log(userSesion)
+  if (userSesion) {
+    sesion(JSON.parse(userSesion))
+  }
+
   return (
     <BrowserRouter>
       <MenuComponent></MenuComponent>
@@ -43,10 +50,6 @@ function App({ auth }) {
       <div className="App">
         <SideMenuComponent />
         <Switch>
-          <Route exact path={ROUTES.DEFAULT}>
-            <Redirect to={defaultRoute} />
-          </Route>
-
           <Route exact path={ROUTES.LOGIN}>
             <LoginPage />
           </Route>
@@ -55,7 +58,11 @@ function App({ auth }) {
             <SignupPage />
           </Route>
 
-          <PrivateRoute exact path={ROUTES.USER_LIST}>
+          <PrivateRoute exact auth={auth} path={ROUTES.DEFAULT}>
+            <WelcomePage />
+          </PrivateRoute>
+
+          <PrivateRoute exact auth={auth} path={ROUTES.USER_LIST}>
             <UserListPage />
           </PrivateRoute>
 
@@ -69,4 +76,8 @@ const mapStateToProps = store => ({
   auth: store.user.logged
 })
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  sesion: payload => dispatch(loadSesion(payload))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

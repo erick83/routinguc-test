@@ -48,12 +48,15 @@ class UserFormComponent extends Component {
         e.preventDefault()
 
         const data = {
-            user: this.state.user,
-            password: this.state.password,
-            email: this.state.email,
+            user: {
+                username:this.state.user,
+                password: this.state.password,
+                email: this.state.email,
+            }
         }
 
         if (this.isValid(data)) {
+            console.log(data)
             this.props.submit(data)
         }
     }

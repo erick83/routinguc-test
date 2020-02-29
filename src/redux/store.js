@@ -1,14 +1,20 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
+
 import userReducer from './user/reducer'
 import uiStatesReducer from './ui-states/reducers'
 
-const reducers = combineReducers({
+const reducer = combineReducers({
     user: userReducer,
     ui: uiStatesReducer,
 })
 
+const composeEnhancers = composeWithDevTools({})
+
 export default createStore(
-    reducers,
-    //TODO: Disable on production
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    reducer,
+    composeEnhancers(
+        applyMiddleware(thunk),
+    )
 )

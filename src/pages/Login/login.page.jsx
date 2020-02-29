@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { UserFormComponent } from '../../components'
 import { userLogin } from '../../redux/user/actions'
 
-const mapDispatchToProps = { userLogin }
+const mapDispatchToProps = dispatch => ({
+    login: (payload) => dispatch(userLogin(payload))
+})
 
-function LoginPage({userLogin}) {
-    return (<UserFormComponent submit={userLogin} type="login" />)
+function LoginPage({login}) {
+    return (<UserFormComponent submit={login} type="login" />)
 }
 
 export default connect(null, mapDispatchToProps)(LoginPage)
