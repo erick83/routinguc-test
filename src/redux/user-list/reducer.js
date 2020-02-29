@@ -1,17 +1,23 @@
-import { LIST } from './actions'
+import { GET_START, GET_SUCCESS, GET_ERROR } from './actions'
 
 const initialState = {
-    users: []
+    users: [],
+    errorMessage: null,
 }
 
 function userListReducer (state = initialState, action) {
     const { type, payload } = action
 
     switch (type) {
-        case LIST:
-            return {
-                users: [...payload]
-            }
+        case GET_SUCCESS:
+            return Object.assign({}, initialState, {
+                users: payload,
+            })
+        case GET_ERROR:
+            return Object.assign({}, initialState, {
+                errorMessage: payload,
+            })
+        case GET_START:
         default:
             return state
     }

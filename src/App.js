@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { MenuComponent, SideMenuComponent } from './components'
-import { LoginPage, UserListPage, SignupPage, WelcomePage } from './pages'
+import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage } from './pages'
 import { loadSesion } from './redux/user/actions'
 import './App.css'
 
@@ -14,6 +14,28 @@ const ROUTES = Object.freeze({
   USER_LIST: '/user-list',
   MAP_INFO: '/map-info',
 })
+
+
+
+function AuthRoute({ children, auth, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !auth ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 
 function PrivateRoute({ children, auth, ...rest }) {
   return (
@@ -36,6 +58,7 @@ function PrivateRoute({ children, auth, ...rest }) {
 }
 
 function App({ auth, sesion }) {
+  console.log('auth', auth)
   const userSesion = sessionStorage.getItem('routinguc-test-user')
 
   if (userSesion) {
@@ -49,13 +72,13 @@ function App({ auth, sesion }) {
       <div className="App">
         <SideMenuComponent />
         <Switch>
-          <Route exact path={ROUTES.LOGIN}>
+          <AuthRoute exact auth={auth} path={ROUTES.LOGIN}>
             <LoginPage />
-          </Route>
+          </AuthRoute>
 
-          <Route exact path={ROUTES.SIGUP}>
+          <AuthRoute exact auth={auth} path={ROUTES.SIGUP}>
             <SignupPage />
-          </Route>
+          </AuthRoute>
 
           <PrivateRoute exact auth={auth} path={ROUTES.DEFAULT}>
             <WelcomePage />
@@ -65,6 +88,13 @@ function App({ auth, sesion }) {
             <UserListPage />
           </PrivateRoute>
 
+          <PrivateRoute exact auth={auth} path={ROUTES.MAP_INFO}>
+            <WelcomePage />
+          </PrivateRoute>
+
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
         </Switch>
       </div>
     </BrowserRouter>

@@ -1,10 +1,11 @@
 async function fetchBase (path, opt) {
     const url = encodeURI('http://btfx.herokuapp.com/' + path)
     const headers = new Headers();
+
     headers.append('Content-Type', 'application/json')
 
     const options = {
-        // ...opt,
+        credentials: 'include',
         method: opt.method,
         headers,
     }

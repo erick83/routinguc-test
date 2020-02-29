@@ -1,9 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { userListFetch } from '../../redux/user-list/actions'
 
-function UserListPage() {
-    return(
+const mapStateToProps = store => ({
+    users: store.users,
+})
+
+const mapDispatchToProps = dispatch => ({
+    getList: () => dispatch(userListFetch())
+})
+
+function UserListPage({ users, getList }) {
+    getList()
+
+    console.log(users)
+    return (
         <div>User List</div>
     )
 }
 
-export default UserListPage
+export default connect(mapStateToProps, mapDispatchToProps)(UserListPage)
