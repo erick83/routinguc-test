@@ -6,11 +6,13 @@ import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell
 class UserListComponent extends React.Component {
 
     static propTypes = {
-        users: PropTypes.array
+        users: PropTypes.array,
+        fetchTrigger: PropTypes.func,
     }
 
     static defaultProps = {
-        users: []
+        users: [],
+        fetchTrigger: () => {}
     }
 
     constructor(props) {
@@ -19,6 +21,10 @@ class UserListComponent extends React.Component {
         this.state = {
             test: true,
         }
+    }
+
+    componentDidMount() {
+        this.props.fetchTrigger()
     }
 
     render() {
@@ -33,6 +39,15 @@ class UserListComponent extends React.Component {
                             <TableCell>Created at</TableCell>
                         </TableRow>
                     </TableHead>
+                    <TableBody>
+                        {users.map(row => (
+                            <TableRow key={`user-list-${row.email}`}>
+                                <TableCell>{row.username}</TableCell>
+                                <TableCell>{row.email}</TableCell>
+                                <TableCell>{row.created_at}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
                 </Table>
             </TableContainer>
         )

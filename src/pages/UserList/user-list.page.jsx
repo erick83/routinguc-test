@@ -5,7 +5,7 @@ import { UserListComponent } from '../../components'
 import { userListFetch } from '../../redux/user-list/actions'
 
 const mapStateToProps = store => ({
-    users: store.users,
+    users: store.userList.users,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -13,11 +13,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function UserListPage({ users, getList }) {
-    getList()
-
     return (
         <Container>
-            <UserListComponent users={users} />
+            <UserListComponent users={users} fetchTrigger={getList} />
         </Container>
     )
 }
