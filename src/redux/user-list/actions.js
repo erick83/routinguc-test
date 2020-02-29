@@ -24,6 +24,7 @@ export const userListFetch = payload => async dispatch => {
             dispatch(requestError())
         } else {
             const users = result.users
+            console.log(result, users)
             dispatch({
                 type: GET_SUCCESS,
                 payload: users,

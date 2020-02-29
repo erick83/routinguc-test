@@ -10,11 +10,11 @@ function userListReducer (state = initialState, action) {
 
     switch (type) {
         case GET_SUCCESS:
-            return Object.assign({}, initialState, {
+            return Object.assign({}, state, {
                 users: payload,
             })
         case GET_ERROR:
-            return Object.assign({}, initialState, {
+            return Object.assign({}, state, {
                 errorMessage: payload,
             })
         case GET_START:
