@@ -30,6 +30,10 @@ export const signupError = error => ({
     payload: error
 })
 
+export const cleanSesion = () => ({
+    type: LOGOUT
+})
+
 // Async Actions creators
 
 export const userSignup = payload => async dispatch => {

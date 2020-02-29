@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Container } from '@material-ui/core'
+import { UserListComponent } from '../../components'
 import { userListFetch } from '../../redux/user-list/actions'
 
 const mapStateToProps = store => ({
@@ -13,9 +15,10 @@ const mapDispatchToProps = dispatch => ({
 function UserListPage({ users, getList }) {
     getList()
 
-    console.log(users)
     return (
-        <div>User List</div>
+        <Container>
+            <UserListComponent users={users} />
+        </Container>
     )
 }
 
