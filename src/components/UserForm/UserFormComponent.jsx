@@ -1,20 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Container, TextField, FormControl, Input, Button, InputLabel, IconButton, InputAdornment, withStyles } from '@material-ui/core'
+import { Container, TextField, FormControl, Input, Button, InputLabel, IconButton, InputAdornment, withStyles, Typography } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 
 const styles = theme => ({
     input: {
         width: '100%',
-        marginBottom: '10px'
+        marginBottom: '10px',
+    },
+    button: {
+        margin: '10px 0',
+    },
+    error: {
+        margin: '20px 0',
     },
 });
 
 class UserFormComponent extends Component {
 
     static propTypes = {
-        type: PropTypes.oneOf(['login', 'signup']),
+        type: PropTypes.oneOf(['login', 'signup']).isRequired,
         classes: PropTypes.object,
+        error: PropTypes.string,
     }
 
     constructor(props) {
@@ -56,7 +63,6 @@ class UserFormComponent extends Component {
         }
 
         if (this.isValid(data)) {
-            console.log(data)
             this.props.submit(data)
         }
     }
@@ -72,7 +78,7 @@ class UserFormComponent extends Component {
 
     render() {
 
-        const { classes, type } = this.props
+        const { classes, type, error } = this.props
 
         return (
         <Container maxWidth="sm">
@@ -108,8 +114,11 @@ class UserFormComponent extends Component {
 
                 <TextField id="email" className={classes.input} type='email' label="Email" onChange={this.handleChange('email')} />
 
-                <Button variant="contained" color="primary" onClick={this.handleSubmit}>Enviar</Button>
+                <Button className={classes.button} variant="contained" color="primary" onClick={this.handleSubmit}>Enviar</Button>
             </form>
+
+            {error && <Typography className={classes.error} color="error">Error: {error}</Typography>}
+
         </Container>
         )
     }

@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 import { MenuComponent, SideMenuComponent } from './components'
 import { LoginPage, UserListPage, SignupPage, WelcomePage } from './pages'
-import { loadSesion } from './redux/user/actions';
-import './App.css';
+import { loadSesion } from './redux/user/actions'
+import './App.css'
 
 const ROUTES = Object.freeze({
   DEFAULT: '/',
@@ -16,7 +16,6 @@ const ROUTES = Object.freeze({
 })
 
 function PrivateRoute({ children, auth, ...rest }) {
-  console.log(auth)
   return (
     <Route
       {...rest}
@@ -38,7 +37,7 @@ function PrivateRoute({ children, auth, ...rest }) {
 
 function App({ auth, sesion }) {
   const userSesion = sessionStorage.getItem('routinguc-test-user')
-  console.log(userSesion)
+
   if (userSesion) {
     sesion(JSON.parse(userSesion))
   }

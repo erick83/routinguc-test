@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
 import userReducer from './user/reducer'
 import uiStatesReducer from './ui-states/reducers'
+import requestStateReducer from './request-state/reducer'
 
 const reducer = combineReducers({
     user: userReducer,
     ui: uiStatesReducer,
+    request: requestStateReducer,
 })
 
 const composeEnhancers = composeWithDevTools({})

@@ -1,6 +1,7 @@
-import { SUCCESS, PENDING, ERROR } from './actions'
+import { SUCCESS, PENDING, ERROR, NO_REQUEST } from './actions'
 
 const initialState = {
+    status: NO_REQUEST,
     loading: false,
 }
 
@@ -9,15 +10,19 @@ function requestStateReducer (state = initialState, action) {
 
     switch (type) {
         case PENDING:
-            return {
+            return Object.assign({}, state, {
+                status: type,
                 loading: true,
-            }
+            })
         case SUCCESS:
         case ERROR:
+        case NO_REQUEST:
+            return Object.assign({}, state, {
+                status: type,
+                loading: false,
+            })
         default:
-            return {
-                loading: false
-            }
+            return state
     }
 }
 

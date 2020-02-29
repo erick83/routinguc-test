@@ -1,4 +1,5 @@
 import { post } from '../../services/fetchService'
+import { requestPending, requestSuccess, requestError } from '../request-state/actions'
 
 // Actions types
 
@@ -23,6 +24,11 @@ export const userLogout = () => ({
     type: LOGOUT,
 })
 
+export const loginError = error => ({
+    type: LOGIN_ERROR,
+    payload: error
+})
+
 // Async Actions creators
 
 export const userSignup = () => dispatch => {
@@ -36,9 +42,14 @@ export const userSignup = () => dispatch => {
 
 export const userLogin = payload => async dispatch => {
     dispatch({ type: LOGIN_START })
+    dispatch(requestPending())
 
-    try {
-        const result = await post('login', payload)
+    const result = await post('login', payload)
+
+    if (result.status && result.status === 'failure') {
+        dispatch(loginError(result.errors.join('. ')))
+        dispatch(requestError())
+    } else {
         const user = {
             user: result.user.username,
             email: result.user.email,
@@ -51,10 +62,6 @@ export const userLogin = payload => async dispatch => {
 
         sessionStorage.setItem('routinguc-test-user', JSON.stringify(user))
 
-    } catch(error) {
-        dispatch({
-            type: LOGIN_ERROR,
-        })
-        console.error(error)
+        dispatch(requestSuccess())
     }
 }
