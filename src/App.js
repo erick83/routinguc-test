@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import { MenuComponent, SideMenuComponent } from './components'
 import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage, MapInfoPage } from './pages'
-import { loadSesion, cleanSesion } from './redux/user/actions'
 import './App.css'
 
 const ROUTES = Object.freeze({
@@ -14,8 +13,6 @@ const ROUTES = Object.freeze({
   USER_LIST: '/user-list',
   MAP_INFO: '/map-info',
 })
-
-
 
 function AuthRoute({ children, auth, ...rest }) {
   return (
@@ -57,19 +54,7 @@ function PrivateRoute({ children, auth, ...rest }) {
   );
 }
 
-function App({ auth, sesion, logout }) {
-
-  React.useEffect(() => {
-    const userSesion = sessionStorage.getItem('routinguc-test-user')
-
-    //TODO: Check cookie to
-    if (userSesion) {
-      sesion(JSON.parse(userSesion))
-    } else {
-      logout()
-    }
-  })
-
+function App({ auth }) {
   return (
     <BrowserRouter>
       <MenuComponent></MenuComponent>
@@ -110,9 +95,4 @@ const mapStateToProps = store => ({
   auth: store.user.logged
 })
 
-const mapDispatchToProps = dispatch => ({
-  sesion: payload => dispatch(loadSesion(payload)),
-  logout: () => dispatch(cleanSesion()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

@@ -12,6 +12,24 @@ class MapComponent extends React.Component {
         fetchTrigger: () => {}
     }
 
+    static getDerivedStateFromProps(props, state) {
+        if(props.points.length > 0) {
+            const position = [props.points[0].origin_latitude, props.points[0].origin_longitude]
+            if (JSON.stringify(position) !== JSON.stringify(state.position)) {
+                return position
+            }
+        }
+        return null
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.setState = {
+            position: [0,0],
+        }
+    }
+
     componentDidMount() {
         this.props.fetchTrigger()
     }

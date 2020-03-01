@@ -16,20 +16,19 @@ export const userListFetch = payload => async dispatch => {
     try {
         const result = await get('users')
 
-        if (result.status && result.status === 'failure') {
-            dispatch({
-                type: GET_ERROR,
-                payload: result.errors.join('. '),
-            })
-            dispatch(requestError())
-        } else {
+        if (result.status && result.status === 'success') {
             const users = result.users
-            console.log(result, users)
             dispatch({
                 type: GET_SUCCESS,
                 payload: users,
             })
             dispatch(requestSuccess())
+        } else {
+            dispatch({
+                type: GET_ERROR,
+                payload: result.error.join('. '),
+            })
+            dispatch(requestError())
         }
     } catch (error) {
         throw error

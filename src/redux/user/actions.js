@@ -1,5 +1,6 @@
 import { post, del } from '../../services/fetchService'
 import { requestPending, requestSuccess, requestError } from '../request-state/actions'
+import { setSesionData, clearSesion } from '../../services/sesionService'
 
 // Actions types
 
@@ -43,10 +44,7 @@ export const userSignup = payload => async dispatch => {
     try {
         const result = await post('signup', payload)
 
-        if (result.status && result.status === 'failure') {
-            dispatch(signupError(result.errors.join('. ')))
-            dispatch(requestError())
-        } else {
+        if (result.status && result.status === 'success') {
             const user = {
                 user: result.user.username,
                 email: result.user.email,
@@ -57,9 +55,12 @@ export const userSignup = payload => async dispatch => {
                 payload: user,
             })
 
-            sessionStorage.setItem('routinguc-test-user', JSON.stringify(user))
+            setSesionData(user)
 
             dispatch(requestSuccess())
+        } else {
+            dispatch(signupError(result.errors.join('. ')))
+            dispatch(requestError())
         }
     } catch (error) {
         throw error
@@ -73,10 +74,7 @@ export const userLogin = payload => async dispatch => {
     try {
         const result = await post('login', payload)
 
-        if (result.status && result.status === 'failure') {
-            dispatch(loginError(result.errors.join('. ')))
-            dispatch(requestError())
-        } else {
+        if (result.status && result.status === 'success') {
             const user = {
                 user: result.user.username,
                 email: result.user.email,
@@ -87,26 +85,52 @@ export const userLogin = payload => async dispatch => {
                 payload: user,
             })
 
-            sessionStorage.setItem('routinguc-test-user', JSON.stringify(user))
+            setSesionData(user)
 
             dispatch(requestSuccess())
+
+        } else {
+            if (result.error[0] === 'a user already logged in') {
+                const error = new Error(`${result.error[0]}. Please try to login again`)
+                error.name = 'Logged Error'
+                throw error
+            } else {
+                const error = new Error(result.error.join('. '))
+                error.name = 'Response Error'
+            }
         }
-    } catch (error) {
-        throw error
+    } catch (e) {
+        if (e.name && e.name === 'Logged Error') {
+            sessionStorage.removeItem('routinguc-test-user')
+            debugger
+            dispatch(loginError(e.message))
+            dispatch(requestError())
+            dispatch(userLogout())
+        } else if (e.name === 'Response Error') {
+            dispatch(loginError(e.message))
+            dispatch(requestError())
+            clearSesion()
+        } else {
+            console.error(e)
+        }
     }
 }
 
 // TODO: Check if is need a callback to redirect route on logout
-export const userLogout = logoutRedirectCallback => async dispatch => {
+export const userLogout = () => async dispatch => {
     dispatch(requestPending())
     dispatch({ type: LOGOUT })
-    sessionStorage.removeItem('routinguc-test-user')
+    clearSesion()
     try {
         const result = await del('logout')
-        console.log('userLogout', result)
-        dispatch(requestSuccess())
-    } catch(error) {
+        if (result.status && result.status === 'success') {
+            dispatch(requestSuccess())
+        } else {
+            const error = new Error(result.error.join('. '))
+            throw error
+        }
+    } catch(e) {
         dispatch(requestError())
-        throw error
+        console.error(e)
     }
 }

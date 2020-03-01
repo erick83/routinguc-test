@@ -12,9 +12,8 @@ import {
 
 const initialState = {
     user: null,
-    logged: true,
+    logged: false,
     errorMessage: null,
-    sesionCookie: null,
 }
 
 export default function userReducer(state = initialState, action) {
@@ -30,13 +29,14 @@ export default function userReducer(state = initialState, action) {
 
         case LOGIN_ERROR:
         case SIGNUP_ERROR:
-            return Object.assign({}, initialState, {
+            return Object.assign({}, state, {
                 logged: false,
                 errorMessage: payload,
             })
 
         case LOGOUT:
-            return Object.assign({}, initialState, {
+            return Object.assign({}, state, {
+                user: null,
                 logged: false,
             })
 
