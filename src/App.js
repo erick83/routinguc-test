@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { MenuComponent, SideMenuComponent } from './components'
-import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage } from './pages'
+import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage, MapInfoPage } from './pages'
 import { loadSesion, cleanSesion } from './redux/user/actions'
 import './App.css'
 
@@ -94,7 +94,7 @@ function App({ auth, sesion, logout }) {
           </PrivateRoute>
 
           <PrivateRoute exact auth={auth} path={ROUTES.MAP_INFO}>
-            <WelcomePage />
+            <MapInfoPage />
           </PrivateRoute>
 
           <Route path="*">

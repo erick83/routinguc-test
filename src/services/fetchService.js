@@ -1,7 +1,8 @@
 async function fetchBase (path, opt) {
-    const url = encodeURI('http://btfx.herokuapp.com/' + path)
+    const url = new URL('http://btfx.herokuapp.com/')
     const headers = new Headers();
 
+    url.pathname = path
     headers.append('Content-Type', 'application/json')
 
     const options = {
@@ -11,7 +12,17 @@ async function fetchBase (path, opt) {
     }
 
 
-    if (opt.body) {
+    if (opt.method === 'get' && opt.body) {
+        //TODO: Add params to get
+        // const params = encodeURIComponent(JSON.stringify(opt.body))
+        // url.search = params
+        // console.log('Start')
+        // console.log(Object.keys(opt.body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(opt.body[key])).join('&'))
+        // const jsonS = JSON.stringify(opt.body).replace(/^{|"|}$/g, '')
+        // console.log(jsonS)
+        // console.log(new URLSearchParams(jsonS).toString())
+        // url.search = jsonS
+    } else if (opt.body) {
         options.body = JSON.stringify(opt.body)
     }
 
@@ -19,9 +30,9 @@ async function fetchBase (path, opt) {
     return response.json();
 }
 
-export const get = (path = '') => {
+export const get = (path = '', body) => {
     const method = 'get'
-    return fetchBase(path, {method})
+    return fetchBase(path, {method, body})
 }
 
 export const post = (path = '', body) => {
