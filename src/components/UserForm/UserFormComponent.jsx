@@ -88,7 +88,7 @@ class UserFormComponent extends Component {
                 {type === 'signup' ? (
                     <React.Fragment>
                         <TextField id="password" className={classes.input} type="password" label="Password" onChange={this.handleChange('password')} />
-                        <TextField id="password-confirm" className={classes.input} type="password" label="Confirm Password" onChange={this.handleChange('passwordConfirm')} />
+                        <TextField id="password-confirm" error={true} className={classes.input} type="password" label="Confirm Password" onChange={this.handleChange('passwordConfirm')} />
                     </React.Fragment>
                 ) : (
                     <FormControl className={classes.input}>

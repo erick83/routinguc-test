@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { MenuComponent } from './components'
-import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage, MapInfoPage } from './pages'
+import { LoginPage, UserListPage, SignupPage, NotFoundPage, MapInfoPage } from './pages'
 import './App.css'
 import { loadSesion } from './redux/user/actions';
 import { getSesionData } from './services/sesionService';
@@ -26,7 +26,7 @@ function AuthRoute({ children, auth, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/",
+              pathname: ROUTES.DEFAULT,
               state: { from: location }
             }}
           />
@@ -46,7 +46,7 @@ function PrivateRoute({ children, auth, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: ROUTES.LOGIN,
               state: { from: location }
             }}
           />
