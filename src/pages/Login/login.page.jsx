@@ -2,9 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { UserFormComponent, LoaderComponent } from '../../components'
-import { userLogin, loadSesion } from '../../redux/user/actions'
+import { userLogin } from '../../redux/user/actions'
 import { Typography, makeStyles } from '@material-ui/core'
-import { getSesionData } from '../../services/sesionService'
 
 const useStyles = makeStyles({
     title: {
@@ -21,18 +20,10 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => ({
     loginHandler: (payload) => dispatch(userLogin(payload)),
-    loadHandler: (payload) => dispatch(loadSesion(payload)),
 })
 
-function LoginPage({ loading, auth, loginErrorMessage, loginHandler, loadHandler }) {
+function LoginPage({ loading, loginErrorMessage, loginHandler }) {
     const classes = useStyles()
-
-    React.useEffect(() => {
-        const sesionData = getSesionData()
-        if (sesionData) {
-            loadHandler(sesionData)
-        }
-    })
 
     return (
         <div>

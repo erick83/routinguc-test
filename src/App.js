@@ -2,9 +2,11 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { MenuComponent, SideMenuComponent } from './components'
+import { MenuComponent } from './components'
 import { LoginPage, UserListPage, SignupPage, WelcomePage, NotFoundPage, MapInfoPage } from './pages'
 import './App.css'
+import { loadSesion } from './redux/user/actions';
+import { getSesionData } from './services/sesionService';
 
 const ROUTES = Object.freeze({
   DEFAULT: '/',
@@ -54,12 +56,18 @@ function PrivateRoute({ children, auth, ...rest }) {
   );
 }
 
-function App({ auth }) {
+function App({ auth, loadHandler }) {
+  React.useEffect(() => {
+    const sesionData = getSesionData()
+    if (sesionData) {
+      loadHandler(sesionData)
+    }
+  })
+
   return (
     <BrowserRouter>
       <MenuComponent></MenuComponent>
       <div className="App">
-        <SideMenuComponent />
         <Switch>
           <AuthRoute exact auth={auth} path={ROUTES.LOGIN}>
             <LoginPage />
@@ -70,7 +78,7 @@ function App({ auth }) {
           </AuthRoute>
 
           <PrivateRoute exact auth={auth} path={ROUTES.DEFAULT}>
-            <WelcomePage />
+            <Redirect to={ROUTES.MAP_INFO}/>
           </PrivateRoute>
 
           <PrivateRoute exact auth={auth} path={ROUTES.USER_LIST}>
@@ -94,4 +102,8 @@ const mapStateToProps = store => ({
   auth: store.user.logged
 })
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  loadHandler: (payload) => dispatch(loadSesion(payload)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

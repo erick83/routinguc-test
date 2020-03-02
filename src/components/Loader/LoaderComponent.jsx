@@ -9,7 +9,7 @@ const useStyles = makeStyles({
         bottom: 0,
         left: 0,
         background: 'rgba(255, 255, 255, 0.8)',
-        zIndex: 1,
+        zIndex: 2000,
     },
     child: {
         margin: 'auto',

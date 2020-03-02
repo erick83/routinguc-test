@@ -1,6 +1,6 @@
 export { default as MenuComponent } from './Menu/MenuComponent'
-export { default as SideMenuComponent } from './SideMenu/SideMenuComponent'
 export { default as UserFormComponent } from './UserForm/UserFormComponent'
 export { default as LoaderComponent } from './Loader/LoaderComponent'
 export { default as UserListComponent } from './UserList/UserListComponent'
 export { default as MapComponent } from './Map/MapComponent'
+export { default as MapControlComponent } from './MapControl/MapControlComponent'

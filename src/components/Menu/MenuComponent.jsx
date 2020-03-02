@@ -67,10 +67,12 @@ function MenuComponent({ logged, logoutHandler }) {
     if (location.pathname === '/login') {
         route = '/signup'
         text = 'Signup'
-    } else if (location.pathname === '/signup') {
+    } else {
         route = '/login'
         text = 'Login'
     }
+
+    console.log(logged)
 
     return (
         <div className={classes.root}>
@@ -91,7 +93,7 @@ function MenuComponent({ logged, logoutHandler }) {
                         }}
                     />
                     <BottomNavigationAction
-                        label="Lista de Usuarios"
+                        label="User List"
                         value="/user-list"
                         icon={<ListAltRounded />}
                         classes={{
