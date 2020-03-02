@@ -17,9 +17,6 @@ export const successIcon = new L.Icon({
     iconAnchor: [20, 40],
     popupAnchor: [0, -35],
     iconSize: [40, 40],
-    // shadowUrl: '../assets/marker-shadow.png',
-    // shadowSize: [29, 40],
-    // shadowAnchor: [7, 40],
   })
 
 export const pendingIcon = new L.Icon({
@@ -28,9 +25,6 @@ export const pendingIcon = new L.Icon({
     iconAnchor: [20, 40],
     popupAnchor: [0, -35],
     iconSize: [40, 40],
-    // shadowUrl: '../assets/marker-shadow.png',
-    // shadowSize: [29, 40],
-    // shadowAnchor: [7, 40],
   })
 
 export const errorIcon = new L.Icon({
@@ -39,9 +33,6 @@ export const errorIcon = new L.Icon({
     iconAnchor: [20, 40],
     popupAnchor: [0, -35],
     iconSize: [40, 40],
-    // shadowUrl: '../assets/marker-shadow.png',
-    // shadowSize: [29, 40],
-    // shadowAnchor: [7, 40],
   })
 
 const iconSelecter = {
@@ -99,10 +90,9 @@ class MapComponent extends React.Component {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
-                    {points.map(point => {
-                        console.log(point, point.status, iconSelecter, iconSelecter[point.status])
+                    {points.map((point, key) => {
                         return (
-                            <Marker position={this.getLatLng(point)} key={JSON.stringify(point)} icon={iconSelecter[point.status]}>
+                            <Marker position={this.getLatLng(point)} key={key+JSON.stringify(point)} icon={iconSelecter[point.status]}>
                                 <Popup>Status<br />{point.status}</Popup>
                             </Marker>
                         )}

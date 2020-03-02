@@ -90,19 +90,18 @@ export const userLogin = payload => async dispatch => {
             dispatch(requestSuccess())
 
         } else {
-            if (result.errors[0] === 'a user already logged in') {
-                const error = new Error(`${result.errors[0]}. Please try to login again`)
+            if (result.error && result.error[0] === 'a user already logged in') {
+                const error = new Error(`${result.error[0]}. Please try to login again`)
                 error.name = 'Logged Error'
                 throw error
             } else {
-                const error = new Error(result.errors.join('. '))
+                const error = new Error(result.error.join('. '))
                 error.name = 'Response Error'
             }
         }
     } catch (e) {
         if (e.name && e.name === 'Logged Error') {
             sessionStorage.removeItem('routinguc-test-user')
-            debugger
             dispatch(loginError(e.message))
             dispatch(requestError())
             dispatch(userLogout())
