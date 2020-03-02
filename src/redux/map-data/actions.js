@@ -1,5 +1,6 @@
 import { get } from '../../services/fetchService'
 import { requestPending, requestSuccess, requestError } from '../request-state/actions'
+import { parsePoints } from '../../services/util'
 
 // Actions types
 
@@ -9,20 +10,25 @@ export const GET_ERROR = 'MAP_DATA_GET_ERROR'
 
 // Async creators
 
-export const mapDataFetch = (payload = {total: {max: 50, min: 0}, status: {options:['CREATED']}}) => async dispatch => {
+export const mapDataFetch = (payload = {limit: 5, status: null}) => async dispatch => {
     dispatch({ type: GET_START })
     dispatch(requestPending())
 
-    const { total, status } = payload
+    const { limit, status } = payload
 
     try {
-        const result = await get('data', {total, status})
+        const result = await get('map', {limit, status})
 
         if (result.status && result.status === 'success') {
-            const { points } = result
+            const raw = result.points
+            const points = parsePoints(raw)
+
             dispatch({
                 type: GET_SUCCESS,
-                payload: points,
+                payload: {
+                    raw,
+                    points,
+                },
             })
             dispatch(requestSuccess())
         } else {

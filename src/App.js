@@ -58,7 +58,6 @@ function App({ auth }) {
   return (
     <BrowserRouter>
       <MenuComponent></MenuComponent>
-
       <div className="App">
         <SideMenuComponent />
         <Switch>

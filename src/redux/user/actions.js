@@ -90,12 +90,12 @@ export const userLogin = payload => async dispatch => {
             dispatch(requestSuccess())
 
         } else {
-            if (result.error[0] === 'a user already logged in') {
-                const error = new Error(`${result.error[0]}. Please try to login again`)
+            if (result.errors[0] === 'a user already logged in') {
+                const error = new Error(`${result.errors[0]}. Please try to login again`)
                 error.name = 'Logged Error'
                 throw error
             } else {
-                const error = new Error(result.error.join('. '))
+                const error = new Error(result.errors.join('. '))
                 error.name = 'Response Error'
             }
         }

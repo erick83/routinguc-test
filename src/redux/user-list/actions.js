@@ -26,7 +26,7 @@ export const userListFetch = payload => async dispatch => {
         } else {
             dispatch({
                 type: GET_ERROR,
-                payload: result.error.join('. '),
+                payload: result.errors.join('. '),
             })
             dispatch(requestError())
         }

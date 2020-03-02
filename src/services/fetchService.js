@@ -1,3 +1,5 @@
+import { jsonToUriSearch } from "./util";
+
 async function fetchBase (path, opt) {
     const url = new URL('http://btfx.herokuapp.com/')
     const headers = new Headers();
@@ -12,16 +14,8 @@ async function fetchBase (path, opt) {
     }
 
 
-    if (opt.method === 'get' && opt.body) {
-        //TODO: Add params to get
-        // const params = encodeURIComponent(JSON.stringify(opt.body))
-        // url.search = params
-        // console.log('Start')
-        // console.log(Object.keys(opt.body).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(opt.body[key])).join('&'))
-        // const jsonS = JSON.stringify(opt.body).replace(/^{|"|}$/g, '')
-        // console.log(jsonS)
-        // console.log(new URLSearchParams(jsonS).toString())
-        // url.search = jsonS
+    if (opt.method === 'get' && opt.search) {
+        url.search = jsonToUriSearch(opt.search)
     } else if (opt.body) {
         options.body = JSON.stringify(opt.body)
     }
@@ -30,9 +24,9 @@ async function fetchBase (path, opt) {
     return response.json();
 }
 
-export const get = (path = '', body) => {
+export const get = (path = '', search) => {
     const method = 'get'
-    return fetchBase(path, {method, body})
+    return fetchBase(path, {method, search})
 }
 
 export const post = (path = '', body) => {

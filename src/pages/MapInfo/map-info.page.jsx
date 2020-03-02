@@ -1,25 +1,34 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Container, makeStyles } from '@material-ui/core'
 
 import { mapDataFetch } from '../../redux/map-data/actions'
 import MapComponent from '../../components/Map/MapComponent'
 
+const useStyles = makeStyles({
+    container: {
+        height: '800px',
+        width: '1200px',
+    }
+})
+
 const mapStateToProps = state => ({
-    mapData: state.mapData.points,
+    points: state.mapData.points,
+    max: state.mapData.max,
+    statusFilter: state.mapData.statusFilter,
 })
 
 const mapDispatchToProps = dispatch => ({
     getMapData: () => dispatch(mapDataFetch()),
 })
 
-function MapInfoPage({ mapData = [], getMapData }) {
-    //TODO: Remove when can apply filters
-    const data = mapData.length > 50 ? mapData.slice(0, 50) : mapData
+function MapInfoPage({ points, max, statusFilter, getMapData }) {
+    const classes = useStyles()
 
     return (
-        <div>
-            <MapComponent points={data} fetchTrigger={getMapData}/>
-        </div>
+        <Container>
+            <MapComponent className={classes.container} points={points} max={max} statusFilter={statusFilter} fetchTrigger={getMapData}/>
+        </Container>
     )
 }
 

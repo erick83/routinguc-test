@@ -1,13 +1,9 @@
 import React from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { AppBar, BottomNavigation, BottomNavigationAction, Toolbar, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import { ListAltRounded, Map } from '@material-ui/icons';
 
 import { openSideMenu } from '../../redux/ui-states/actions'
 import { userLogout } from '../../redux/user/actions'
@@ -20,7 +16,23 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(2),
     },
     title: {
+        flexGrow: 0,
+    },
+    titleFull: {
         flexGrow: 1,
+    },
+    navigator: {
+        flexGrow: 1,
+        background: 'none',
+        justifyContent: 'flex-end',
+        paddingRight: '40px'
+    },
+    navigatorChild: {
+        color: '#fff',
+        maxWidth: '135px',
+    },
+    navigatorChildSelected: {
+        color: '#eee !important'
     },
     mutateButton: {
         textDecoration: 'none',
@@ -37,9 +49,17 @@ const mapDispatchToProps = dispatch => ({
     logoutHandler: () => dispatch(userLogout()),
 })
 
-function MenuComponent({ logged, openSideMenuHandler, logoutHandler }) {
+function MenuComponent({ logged, logoutHandler }) {
     const classes = useStyles()
     const location = useLocation()
+    const history = useHistory()
+
+    const [innerRoute, setInnerRoute] = React.useState('/')
+
+    const handleChange = (event, newValue) => {
+        setInnerRoute(newValue)
+        history.push(newValue)
+    }
 
     let route = ''
     let text = ''
@@ -56,12 +76,31 @@ function MenuComponent({ logged, openSideMenuHandler, logoutHandler }) {
         <div className={classes.root}>
         <AppBar position="static">
             <Toolbar>
-            <IconButton edge="start" onClick={openSideMenuHandler} className={classes.menuButton} color="inherit" aria-label="menu" disabled={!logged}>
-                <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={logged ? classes.title : classes.titleFull}>
                 RoutingUC TEST
             </Typography>
+            {logged && (
+                <BottomNavigation value={innerRoute} onChange={handleChange} className={classes.navigator}>
+                    <BottomNavigationAction
+                        label="Map Info"
+                        value="/map-info"
+                        icon={<Map />}
+                        classes={{
+                            root: classes.navigatorChild,
+                            selected: classes.navigatorChildSelected,
+                        }}
+                    />
+                    <BottomNavigationAction
+                        label="Lista de Usuarios"
+                        value="/user-list"
+                        icon={<ListAltRounded />}
+                        classes={{
+                            root: classes.navigatorChild,
+                            selected: classes.navigatorChildSelected,
+                        }}
+                    />
+                </BottomNavigation>
+            )}
 
             {logged ?
                 <Button color="inherit" onClick={() => logoutHandler()}>Loguot</Button> :
