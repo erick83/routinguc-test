@@ -1,7 +1,7 @@
 import { jsonToUriSearch } from "./util";
 
 async function fetchBase (path, opt) {
-    const url = new URL('http://btfx.herokuapp.com/')
+    const url = new URL('https://btfx.herokuapp.com/')
     const headers = new Headers();
 
     url.pathname = path
