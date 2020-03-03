@@ -10,6 +10,7 @@ async function fetchBase (path, opt) {
     const options = {
         credentials: 'include',
         method: opt.method,
+        mode: 'no-cors',
         headers,
     }
 
