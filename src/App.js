@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 
 import { MenuComponent } from './components'
 import { LoginPage, UserListPage, SignupPage, NotFoundPage, MapInfoPage } from './pages'
-import './App.css'
 import { loadSesion } from './redux/user/actions';
 import { getSesionData } from './services/sesionService';
+import './App.css'
 
 const ROUTES = Object.freeze({
   DEFAULT: '/',

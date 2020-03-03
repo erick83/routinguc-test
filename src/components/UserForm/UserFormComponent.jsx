@@ -14,6 +14,9 @@ const styles = theme => ({
     error: {
         margin: '20px 0',
     },
+    matchErrorMessage: {
+        margin: '10px'
+    }
 });
 
 class UserFormComponent extends Component {
@@ -51,6 +54,11 @@ class UserFormComponent extends Component {
         })
     }
 
+    passwordMatch = () => {
+        const { password, passwordConfirm } = this.state
+        return password === passwordConfirm
+    }
+
     handleSubmit = (e) => {
         e.preventDefault()
 
@@ -85,32 +93,40 @@ class UserFormComponent extends Component {
             <form noValidate>
                 <TextField id="user" className={classes.input} label="User" onChange={this.handleChange('user')} />
 
-                {type === 'signup' ? (
-                    <React.Fragment>
-                        <TextField id="password" className={classes.input} type="password" label="Password" onChange={this.handleChange('password')} />
-                        <TextField id="password-confirm" error={true} className={classes.input} type="password" label="Confirm Password" onChange={this.handleChange('passwordConfirm')} />
-                    </React.Fragment>
-                ) : (
-                    <FormControl className={classes.input}>
-                        <InputLabel htmlFor="password-input">Password</InputLabel>
-                        <Input
-                            id="password-input"
-                            type={this.state.showPassword ? 'text' : 'password'}
-                            value={this.password}
-                            onChange={this.handleChange('password')}
-                            endAdornment={
-                                <InputAdornment>
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={this.handleClickShowPassword}
-                                    >
-                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                )}
+                <FormControl className={classes.input}>
+                    <InputLabel htmlFor="password-input">Password</InputLabel>
+                    <Input
+                        id="password-input"
+                        type={this.state.showPassword ? 'text' : 'password'}
+                        value={this.password}
+                        onChange={this.handleChange('password')}
+                        endAdornment={
+                            <InputAdornment>
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={this.handleClickShowPassword}
+                                >
+                                    {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
+
+                {type === 'signup' && !this.state.showPassword &&
+                    <TextField
+                        id="password-confirm"
+                        error={!this.passwordMatch()}
+                        className={classes.input}
+                        type="password"
+                        label="Confirm Password"
+                        onChange={this.handleChange('passwordConfirm')}
+                    />
+                }
+
+                {type === 'signup' && !this.state.showPassword && !this.passwordMatch() &&
+                    <Typography variant="caption" color="error" className={classes.matchErrorMessage}>Password did not match</Typography>
+                }
 
                 <TextField id="email" className={classes.input} type='email' label="Email" onChange={this.handleChange('email')} />
 
