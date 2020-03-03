@@ -100,6 +100,7 @@ class UserFormComponent extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
 
+        if (this.isValid(this.state)) {
         const data = {
             user: {
                 username:this.state.user,
@@ -108,7 +109,6 @@ class UserFormComponent extends Component {
             }
         }
 
-        if (this.isValid(data)) {
             this.props.submit(data)
         } else {
             this.setState({
@@ -122,7 +122,7 @@ class UserFormComponent extends Component {
     }
 
     isValid = (state) => {
-        if (!isEmpty(state.user) && !isEmpty(state.password) && !isEmpty(state.email) && this.checkEmail()) {
+        if (!isEmpty(state.user) && !isEmpty(state.password) && !isEmpty(state.email) && this.checkEmail(state.email)) {
             if (this.props.type === 'signup' && state.password !== state.passwordConfirm) {
                 return false
             }

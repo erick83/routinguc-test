@@ -62,8 +62,10 @@ export const userSignup = payload => async dispatch => {
             dispatch(signupError(result.errors.join('. ')))
             dispatch(requestError())
         }
-    } catch (error) {
-        throw error
+    } catch (e) {
+        dispatch(loginError(e.message))
+        dispatch(requestError())
+        console.error(e)
     }
 }
 
@@ -102,16 +104,14 @@ export const userLogin = payload => async dispatch => {
     } catch (e) {
         if (e.name && e.name === 'Logged Error') {
             sessionStorage.removeItem('routinguc-test-user')
-            dispatch(loginError(e.message))
-            dispatch(requestError())
             dispatch(userLogout())
         } else if (e.name === 'Response Error') {
-            dispatch(loginError(e.message))
-            dispatch(requestError())
             clearSesion()
         } else {
             console.error(e)
         }
+        dispatch(loginError(e.message))
+        dispatch(requestError())
     }
 }
 

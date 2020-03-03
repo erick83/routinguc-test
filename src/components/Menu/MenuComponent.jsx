@@ -72,8 +72,6 @@ function MenuComponent({ logged, logoutHandler }) {
         text = 'Login'
     }
 
-    console.log(logged)
-
     return (
         <div className={classes.root}>
         <AppBar position="static">

@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import userReducer from './user/reducer'
 import uiStatesReducer from './ui-states/reducers'

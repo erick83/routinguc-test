@@ -20,8 +20,13 @@ async function fetchBase (path, opt) {
         options.body = JSON.stringify(opt.body)
     }
 
-    const response = await fetch(url, options);
-    return response.json();
+    try {
+        const response = await fetch(url, options);
+        return response.json();
+    } catch (e) {
+        throw e
+    }
+
 }
 
 export const get = (path = '', search) => {
