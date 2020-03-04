@@ -54,7 +54,7 @@ function MenuComponent({ logged, logoutHandler }) {
     const location = useLocation()
     const history = useHistory()
 
-    const [innerRoute, setInnerRoute] = React.useState('/')
+    const [innerRoute, setInnerRoute] = React.useState(null)
 
     const handleChange = (event, newValue) => {
         setInnerRoute(newValue)
@@ -80,7 +80,7 @@ function MenuComponent({ logged, logoutHandler }) {
                 RoutingUC TEST
             </Typography>
             {logged && (
-                <BottomNavigation value={innerRoute} onChange={handleChange} className={classes.navigator}>
+                <BottomNavigation value={innerRoute || location.pathname} onChange={handleChange} className={classes.navigator}>
                     <BottomNavigationAction
                         label="Map Info"
                         value="/map-info"
